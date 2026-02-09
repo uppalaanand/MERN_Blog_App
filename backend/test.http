@@ -73,3 +73,17 @@ Content-Type: application/json
     "content": "This is the updated content of my article.",
     "category": "Science"
 }
+
+###
+//logout
+POST http://localhost:5000/logout
+
+###
+POST http://localhost:5000/user-api/comments
+Content-Type: application/json
+
+{
+    "articleId": "698974374ec738758611c2e7",
+    "user": "6989659af620ae5d19bed311",
+    "comment": "Great article! Very informative."
+}

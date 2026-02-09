@@ -38,6 +38,17 @@ async function connectDB() {
 }
 connectDB();
 
+//logout for User, author, and admin
+app.post('/logout', (req, res) => {
+    //Clear the cookie named 'token
+    res.clearCookie('token', {
+        httpOnly : true,
+        secure : false,
+        sameSite : 'lax'
+    })
+    res.status(200).json({message : "logged out successfully"});
+})
+
 //error handling middleware
 app.use((err, req, res, next) => {
     console.log("err", err);
