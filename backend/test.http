@@ -1,0 +1,75 @@
+// Create a new user with a USER role
+POST http://localhost:5000/user-api/users
+Content-Type: application/json
+
+{
+    "firstName": "Anand",
+    "lastName": "Kumar",
+    "email": "23eg105b53@anurag.edu.in",
+    "password": "anand123",
+    "profileImageUrl": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+}
+
+###
+// Create a new user with a USER role
+POST http://localhost:5000/author-api/users
+Content-Type: application/json
+
+{
+    "firstName": "Mani",
+    "lastName": "Sri",
+    "email": "23eg105b24@anurag.edu.in",
+    "password": "mani123",
+    "profileImageUrl": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+}
+
+###
+// Login as the created user role to get a JWT token
+POST http://localhost:5000/user-api/authenticate
+Content-Type: application/json
+
+{
+    "password": "anand123",
+    "role": "USER",
+    "email": "23eg105b53@anurag.edu.in"
+}
+
+###
+// Login as the created author role to get a JWT token
+POST http://localhost:5000/author-api/authenticate
+Content-Type: application/json
+
+{
+    "password": "anand123",
+    "role": "AUTHOR",
+    "email": "23eg105b54@anurag.edu.in"
+}
+
+###
+// Create a new article as an AUTHOR (replace <JWT_TOKEN> with the token obtained from the previous step)
+POST http://localhost:5000/author-api/articles
+Content-Type: application/json
+
+{
+    "author" : "6989659af620ae5d19bed311",
+    "title": "My First Article",
+    "content": "This is the content of my first article.",
+    "category": "Technology"
+}
+
+// Get the article by author
+###
+GET http://localhost:5000/author-api/articles/6989663bf620ae5d19bed315
+
+###
+//Update the article
+PUT http://localhost:5000/author-api/articles
+Content-Type: application/json
+
+{
+    "author" : "6989663bf620ae5d19bed315",
+    "articleId": "698974374ec738758611c2e7",
+    "title": "My Updated Article",
+    "content": "This is the updated content of my article.",
+    "category": "Science"
+}
