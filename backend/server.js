@@ -4,8 +4,8 @@ import { config } from 'dotenv'
 import { userRoute } from './APIS/userAPI.js';
 import { adminRoute } from './APIS/adminAPI.js';
 import { authorRoute } from './APIS/authorAPI.js';
-import { checkAuthor } from './middleware/checkAuthor.js';
 import cookieParser from 'cookie-parser';
+import { commonRoute } from './APIS/commonAPI.js';
 
 config();
 
@@ -17,6 +17,7 @@ app.use(cookieParser());
 
 
 //connect APIS
+app.use('/common-api', commonRoute);
 app.use('/user-api', userRoute);
 app.use('/admin-api', adminRoute);
 app.use('/author-api', authorRoute);
@@ -38,19 +39,12 @@ async function connectDB() {
 }
 connectDB();
 
-//logout for User, author, and admin
-app.post('/logout', (req, res) => {
-    //Clear the cookie named 'token
-    res.clearCookie('token', {
-        httpOnly : true,
-        secure : false,
-        sameSite : 'lax'
-    })
-    res.status(200).json({message : "logged out successfully"});
+app.use((req, res, next) => {
+    res.json({message : `${req.path} Invalid Path`});
 })
 
 //error handling middleware
 app.use((err, req, res, next) => {
     console.log("err", err);
     res.json({message: "error", reason : err.message });
-})
+});

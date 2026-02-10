@@ -15,21 +15,6 @@ userRoute.post('/users', async (req, res) => {
     //send res
     res.status(201).json({message : "User Created", payload : newUserObj});
 });
-//Authenticate user
-userRoute.post('/authenticate', async (req, res) => {
-    //get user Credintial object
-    let userCred = req.body;
-    //authenticate user
-    let { token, user } = await authenticate(userCred);
-    //save the token in httpOnly
-    res.cookie("token", token, {
-        httpOnly : true,
-        sameSite : 'lax',
-        secure : false
-    });
-    //send res
-    res.status(200).json({message : "Login Success", payload : user});
-});
 
 //read all articles
 userRoute.get('/articles', async (req, res) => {

@@ -20,21 +20,6 @@ authorRoute.post('/users', async (req, res) => {
     res.status(201).json({message : "User Created", payload : newUserObj});
 });
 
-//authenticate author(public)
-authorRoute.post('/authenticate', async (req, res) => {
-    //get user Credintial object
-    let userCred = req.body;
-    //authenticate user
-    let { token, user } = await authenticate(userCred);
-    //save the token in httpOnly
-    res.cookie("token", token, {
-        httpOnly : true,
-        sameSite : 'lax',
-        secure : false
-    });
-    //send res
-    res.status(200).json({message : "Login Success", payload : user});
-});
 
 //Create article(protected)
 authorRoute.post('/articles', verifyToken, checkAuthor, async (req, res) => {

@@ -25,23 +25,21 @@ Content-Type: application/json
 
 ###
 // Login as the created user role to get a JWT token
-POST http://localhost:5000/user-api/authenticate
+POST http://localhost:5000/common-api/login
 Content-Type: application/json
 
 {
     "password": "anand123",
-    "role": "USER",
     "email": "23eg105b53@anurag.edu.in"
 }
 
 ###
 // Login as the created author role to get a JWT token
-POST http://localhost:5000/author-api/authenticate
+POST http://localhost:5000/common-api/login
 Content-Type: application/json
 
 {
     "password": "anand123",
-    "role": "AUTHOR",
     "email": "23eg105b54@anurag.edu.in"
 }
 
@@ -76,7 +74,7 @@ Content-Type: application/json
 
 ###
 //logout
-POST http://localhost:5000/logout
+GET http://localhost:5000/common-api/logout
 
 ###
 POST http://localhost:5000/user-api/comments
@@ -87,3 +85,6 @@ Content-Type: application/json
     "user": "6989659af620ae5d19bed311",
     "comment": "Great article! Very informative."
 }
+
+###
+GET http://localhost:5000/r
