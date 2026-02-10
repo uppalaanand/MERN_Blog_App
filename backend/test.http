@@ -44,6 +44,16 @@ Content-Type: application/json
 }
 
 ###
+// Login as the created admin role to get a JWT token
+POST http://localhost:5000/common-api/login
+Content-Type: application/json
+
+{
+    "password": "admin",
+    "email": "admin@gmail.com"
+}
+
+###
 // Create a new article as an AUTHOR (replace <JWT_TOKEN> with the token obtained from the previous step)
 POST http://localhost:5000/author-api/articles
 Content-Type: application/json
@@ -88,3 +98,26 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5000/r
+
+###
+//admin can block a user
+PUT http://localhost:5000/admin-api/block-user/6989798d09520f8cd85dcf7f
+
+###
+//admin can unblock a user
+PUT http://localhost:5000/admin-api/unblock-user/6989798d09520f8cd85dcf7f
+
+###
+//admin get articles
+GET http://localhost:5000/admin-api/articles
+
+###
+//change the password of the user
+PUT http://localhost:5000/common-api/change-password
+Content-Type: application/json
+
+{
+    "email": "23eg105b53@anurag.edu.in",
+    "currentPassword" : "anand123",
+    "newPassword": "123456789"
+}

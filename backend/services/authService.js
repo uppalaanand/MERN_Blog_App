@@ -41,6 +41,12 @@ export const authenticate = async ({email, password}) => {
         throw err;
     }
 
+    //check blocked or not
+    if(user.isActive == false) {
+        const err = new Error("Your account blocked. Plz contact Admin");
+        err.status = 403;
+        throw err;
+    }
     //Generate the token
     const token = jwt.sign({userId : user._id, role : user.role, email : user.email}, process.env.JWT_SECRET, { expiresIn : '1h' });
     const userObj = user.toObject();
