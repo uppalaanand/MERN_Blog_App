@@ -53,3 +53,18 @@
 10. Registration & login in common for USER & AUthOR. Create a seperate service for reuse
 
 11. The Client 
+
+### Frontend Development
+
+Create new React app
+Install TailwindCSS
+Install react-hook-form
+Create the following components 
+     a. Home
+     b. Register
+     c. Login
+     d. AddArticle
+     e. UserDashboard
+     f.  AuthorDashboard
+     g. AdminDashboard
+Design forms in Register, Login & AddArticle components  with responsive nature as like in the attached sample UIs
