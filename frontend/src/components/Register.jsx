@@ -6,6 +6,7 @@ function Register() {
 
   function onSubmit(obj) {
     console.log(obj);
+    //Make api request to user 
   }
 
   return (
