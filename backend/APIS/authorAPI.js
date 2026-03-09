@@ -22,7 +22,7 @@ authorRoute.post('/users', async (req, res) => {
 
 
 //Create article(protected)
-authorRoute.post('/articles', verifyToken, checkAuthor, async (req, res) => {
+authorRoute.post('/articles', verifyToken("AUTHOR"), async (req, res) => {
     //get articles from req
     let article = req.body;
     //check for the author
@@ -38,7 +38,7 @@ authorRoute.post('/articles', verifyToken, checkAuthor, async (req, res) => {
 });
 
 //Read article of author(protected)
-authorRoute.get('/articles/:authorId', verifyToken, checkAuthor, async (req, res) => {
+authorRoute.get('/articles/:authorId', verifyToken("AUTHOR"), async (req, res) => {
     //get auth id
     let authorId = req.params.authorId;
     //check for the author
@@ -53,7 +53,7 @@ authorRoute.get('/articles/:authorId', verifyToken, checkAuthor, async (req, res
 });
 
 //edit article(protected)
-authorRoute.put('/articles', verifyToken, checkAuthor, async (req, res) => {
+authorRoute.put('/articles', verifyToken("AUTHOR"), async (req, res) => {
     //get modified article from req
     let {title, category, articleId, content, author } = req.body;
     //find the article
@@ -68,6 +68,21 @@ authorRoute.put('/articles', verifyToken, checkAuthor, async (req, res) => {
 });
 
 //delete {soft delete} article(protected)
-authorRoute.delete('/articles/:articleId', verifyToken, checkAuthor, async (req, res) => {
+authorRoute.patch('/articles/:articleId', verifyToken("AUTHOR"), async (req, res) => {
+    const { isArticleActive } = req.body;
+    const { articleId } = req.params;
 
+    let article = await ArticleModel.findById(articleId);
+    if(!article) {
+        return res.status(403).json({message : "Article Not Found"});
+    }
+    if(req.user.role === "AUTHOR" && article.author.toString() === req.user.userId) {
+        return res.status(403).json({message : "Forbidden, You can only modify your awn articles"});
+    }
+    if(article.isArticleActive === isArticleActive) {
+        return res.status(400).json({message : `Article is already ${isArticleActive ? "Active" : "Deleted"}`});
+    }
+
+    let newArticle = await ArticleModel.findByIdAndUpdate(articleId, {$set : {isArticleActive : isArticleActive}}, {new : true});
+    return res.status(200).json({message : "Deleted Article Successfully", article : newArticle});
 });

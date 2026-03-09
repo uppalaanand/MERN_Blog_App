@@ -2,11 +2,7 @@ import { useForm } from "react-hook-form";
 
 function AddArticle() {
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm();
+  const { register, handleSubmit, formState: { errors }} = useForm();
 
   function onSubmit(data) {
     console.log(data);

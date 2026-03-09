@@ -6,11 +6,13 @@ import { adminRoute } from './APIS/adminAPI.js';
 import { authorRoute } from './APIS/authorAPI.js';
 import cookieParser from 'cookie-parser';
 import { commonRoute } from './APIS/commonAPI.js';
+import cors from 'cors';
 
-config();
+config();   //process.env
 
 const app = Express();
 
+app.use(cors({ origin : ["https://localhost:5137"]}));
 //add body parser middleware
 app.use(Express.json());
 app.use(cookieParser());
@@ -47,4 +49,29 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
     console.log("err", err);
     res.json({message: "error", reason : err.message });
+});
+
+app.use((err, req, res, next) => {
+  // Mongoose validation error
+  if (err.name === "ValidationError") {
+    return res.status(400).json({
+      message: "Validation failed",
+      errors: err.errors,
+    });
+  }
+  // Invalid ObjectId
+  if (err.name === "CastError") {
+    return res.status(400).json({
+      message: "Invalid ID format",
+    });
+  }
+  // Duplicate key
+  if (err.code === 11000) {
+    return res.status(409).json({
+      message: "Duplicate field value",
+    });
+  }
+  res.status(500).json({
+    message: "Internal Server Error",
+  });
 });

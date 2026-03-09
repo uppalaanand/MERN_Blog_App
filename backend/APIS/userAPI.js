@@ -2,6 +2,7 @@ import Express from 'express'
 import { authenticate, register } from '../services/authService.js';
 import { UserTypeModel } from '../models/UserModel.js';
 import { ArticleModel } from '../models/ArticleModel.js';
+import { verifyToken } from '../middleware/verifyToken.js';
 
 export const userRoute = Express.Router();
 
@@ -17,19 +18,24 @@ userRoute.post('/users', async (req, res) => {
 });
 
 //read all articles
-userRoute.get('/articles', async (req, res) => {
+userRoute.get('/articles', verifyToken("USER"), async (req, res) => {
     //get all articles
-    let articles = await UserTypeModel.find();
+    let articles = await ArticleModel.find({isArticleActive : true});
     res.status(200).json({message : "All Articles", payload : articles});
 });
 
 //comment on articles
-userRoute.post('/comments', async (req, res) => {
+userRoute.post('/comments', verifyToken("USER"), async (req, res) => {
     const {articleId, user, comment} = req.body;
+    // console.log(req.user);
+    //Check user(req.user)
+    if(user !== req.user.userId) {
+        return res.status(403).json({message : "Forbidden"});
+    }
     let article = await ArticleModel.findById(articleId);
     if(!article) {
         res.status(404).json({message : "Article Not Found"});
     }
-    let updated = await ArticleModel.findByIdAndUpdate(articleId, {$push : {"comments": {comment, user}}}, { new : true });
+    let updated = await ArticleModel.findByIdAndUpdate(articleId, {$push : {"comments": {comment, user}}}, { new : true, runValidators:true });
     res.status(200).json({message : "Comment added", payload : updated});
 })
