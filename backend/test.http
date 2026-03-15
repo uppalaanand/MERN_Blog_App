@@ -29,8 +29,8 @@ POST http://localhost:5000/common-api/login
 Content-Type: application/json
 
 {
-    "password": "mani123",
-    "email": "23eg105b21@anurag.edu.in"
+    "password": "1234",
+    "email": "testing10@gmail.com"
 }
 
 ###
@@ -39,8 +39,8 @@ POST http://localhost:5000/common-api/login
 Content-Type: application/json
 
 {
-    "password": "anand123",
-    "email": "23eg105b54@anurag.edu.in"
+    "password": "1234",
+    "email": "testing11@gmail.com"
 }
 
 ###
@@ -59,8 +59,8 @@ POST http://localhost:5000/author-api/articles
 Content-Type: application/json
 
 {
-    "author" : "6989659af620ae5d19bed311",
-    "title": "My First Article",
+    "author" : "69afe867c40dd5d5d78702da",
+    "title": "Hello World",
     "content": "This is the content of my first article.",
     "category": "Technology"
 }
@@ -130,3 +130,7 @@ Content-Type: application/json
 {
     "isArticleActive": false
 }
+
+###
+#Get article by id
+GET http://localhost:5000/common-api/article/69afec78c40dd5d5d78702e0

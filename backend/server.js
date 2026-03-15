@@ -12,7 +12,8 @@ config();   //process.env
 
 const app = Express();
 
-app.use(cors({ origin : ["https://localhost:5137"]}));
+app.use(cors({ origin : ["http://localhost:5173"], credentials:true}));
+// app.use(cors());
 //add body parser middleware
 app.use(Express.json());
 app.use(cookieParser());
@@ -52,26 +53,50 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  // Mongoose validation error
+
+  console.log("Error name:", err.name);
+  console.log("Error code:", err.code);
+  console.log("Full error:", err);
+
+  // mongoose validation error
   if (err.name === "ValidationError") {
     return res.status(400).json({
-      message: "Validation failed",
-      errors: err.errors,
+      message: "error occurred",
+      error: err.message,
     });
   }
-  // Invalid ObjectId
+
+  // mongoose cast error
   if (err.name === "CastError") {
     return res.status(400).json({
-      message: "Invalid ID format",
+      message: "error occurred",
+      error: err.message,
     });
   }
-  // Duplicate key
-  if (err.code === 11000) {
+
+  const errCode = err.code ?? err.cause?.code ?? err.errorResponse?.code;
+  const keyValue = err.keyValue ?? err.cause?.keyValue ?? err.errorResponse?.keyValue;
+
+  if (errCode === 11000) {
+    const field = Object.keys(keyValue)[0];
+    const value = keyValue[field];
     return res.status(409).json({
-      message: "Duplicate field value",
+      message: "error occurred",
+      error: `${field} "${value}" already exists`,
     });
   }
+
+  // ✅ HANDLE CUSTOM ERRORS
+  if (err.status) {
+    return res.status(err.status).json({
+      message: "error occurred",
+      error: err.message,
+    });
+  }
+
+  // default server error
   res.status(500).json({
-    message: "Internal Server Error",
+    message: "error occurred",
+    error: "Server side error",
   });
 });

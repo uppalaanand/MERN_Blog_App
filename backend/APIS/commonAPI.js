@@ -3,6 +3,7 @@ import { authenticate } from '../services/authService.js';
 import { UserTypeModel } from '../models/UserModel.js';
 import bcrypt from 'bcrypt'
 import { verifyToken } from '../middleware/verifyToken.js';
+import {ArticleModel} from '../models/ArticleModel.js'
 
 export const commonRoute = Express.Router();
 
@@ -58,4 +59,16 @@ commonRoute.put('/change-password', verifyToken, async (req, res) => {
     //return user obj without password
     res.status(200).json({message : "Password Updated Successfully", payload : newUserObj});
     //send res
+})
+
+//get article by id
+commonRoute.get('/article/:articleId', async (req, res) => {
+    //get the article id 
+    const {articleId} = req.params;
+    //get article from backend
+    const article = await ArticleModel.findById(articleId).populate("comments.user");
+    if(!article) {
+        return res.json(404).json({message:"Article Not Found"});
+    }
+    res.status(200).json({message:"Article Found", payload:article});
 })

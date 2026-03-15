@@ -1,39 +1,55 @@
 import { useForm } from "react-hook-form";
+import { useAuth } from "../store/authStore";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { errorClass, labelClass } from "../styles/common";
+import {toast} from 'react-hot-toast'
 
 function Login() {
-
   const { register, handleSubmit, formState: { errors }} = useForm();
 
-  function onSubmit(obj) {
-    console.log(obj);
+  const login = useAuth(state=>state.login);
+  const isAuthenticated = useAuth((state) => state.isAuthenticated);
+  const currentUser = useAuth((state) => state.currentUser);
+  const error = useAuth((state) => state.error);
+  
+  const navigate = useNavigate();
+  // console.log("Current user", currentUser);
+  // console.log("is isAuthenticated", isAuthenticated);
+
+  async function onSubmit(obj) {
+    // console.log(obj);
+    await login(obj);
   }
+
+  useEffect(() => {
+    if(isAuthenticated) {
+      if(currentUser?.role === "USER") {
+        toast.success("Loggidin Successfully");
+        navigate("/user-profile");
+      }
+      if(currentUser?.role === "AUTHOR") {
+        toast.success("Loggidin Successfully");
+        navigate("/author-profile");
+      }
+      if(currentUser?.role === "ADMIN") {
+        toast.success("Loggidin Successfully");
+        navigate("/admin-profile");
+      }
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Loin</h2>
+        {
+          error?<p className={errorClass}>{error}</p>:<></>
+        }
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Role */}
-          <div>
-            <span className="font-medium">Select Role :</span>
-
-            <div className="flex gap-6 mt-2">
-              <label className="flex items-center gap-2">
-                <input type="radio" value="User" {...register("role", { required: "Role is Required" })} />
-                User
-              </label>
-
-              <label className="flex items-center gap-2">
-                <input type="radio" value="Author" {...register("role", { required: "Role is Required" })} />
-                Author
-              </label>
-            </div>
-
-            {errors.role && ( <p className="text-red-500 text-sm">{errors.role.message}</p> )}
-          </div>
-
           {/* Email */}
           <div>
+            <label className={labelClass}>Email:</label>
             <input
               type="email"
               placeholder="Email"
@@ -47,6 +63,7 @@ function Login() {
 
           {/* Password */}
           <div>
+            <label className={labelClass}>Password:</label>
             <input
               type="password"
               placeholder="Password"

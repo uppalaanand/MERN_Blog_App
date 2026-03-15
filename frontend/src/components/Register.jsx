@@ -1,32 +1,93 @@
 import { useForm } from "react-hook-form";
+import { errorClass, formTitle, inputClass, labelClass, loadingClass, submitBtn } from '../styles/common'
+import { useState } from "react";
+import axios from 'axios'
+import {useNavigate} from 'react-router'
 
 function Register() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  // const [success, setSuccess] = useState();
+
+  const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors }} = useForm();
 
-  function onSubmit(obj) {
-    console.log(obj);
+  async function onSubmit(newUser) {
+    console.log(newUser);
     //Make api request to user 
+    try{
+      const {role, ...user} = newUser;
+      console.log("user", user);
+      if(role === "USER") {
+        //make api req
+        let resObj = await axios.post("http://localhost:5000/user-api/users", user);
+        let res = resObj.data;
+        if(res.status !== 201) {
+          setError(res.reason);
+        }
+          // console.log("Response is:", res);
+          navigate("/login");
+      }
+
+      if(role === "AUTHOR") {
+        //make api req
+        let resObj = await axios.post("http://localhost:5000/author-api/users", user);
+        let res = resObj.data;
+        if(res.status !== 201) {
+          setError(res.reason);
+        }
+          // console.log("Response is:", res);
+          navigate("/login");
+        
+      }
+
+      if(role === "ADMIN") {
+        //make api req
+        let resObj = await axios.post("http://localhost:5000/admin-api/users", user);
+        let res = resObj.data;
+        if(res.status !== 201) {
+          setError(res.reason);
+        }
+          // console.log("Response is:", res);
+          navigate("/login");
+      }
+
+    }catch(err) {
+      setError(err.message?.data?.error || "Registration failed");
+    }finally {
+      setLoading(false);
+    }
   }
+
+  if(loading) return <p className={loadingClass}>Loading...</p>
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8">
-        <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
+        <h2 className={formTitle}>Register</h2>
+        {
+          (error)?<p className={errorClass}>{error}</p>:<></>
+        }
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Role */}
           <div>
             <span className="font-medium">Select Role :</span>
 
             <div className="flex gap-6 mt-2">
-              <label className="flex items-center gap-2">
-                <input type="radio" value="User" {...register("role", { required: "Role is Required" })} />
+              <label className={labelClass}>
+                <input type="radio" value="USER" {...register("role", { required: "Role is Required" })} />
                 User
               </label>
 
-              <label className="flex items-center gap-2">
-                <input type="radio" value="Author" {...register("role", { required: "Role is Required" })} />
+              <label className={labelClass}>
+                <input type="radio" value="AUTHOR" {...register("role", { required: "Role is Required" })} />
                 Author
+              </label>
+
+              <label className={labelClass}>
+                <input type="radio" value="AADMIN" {...register("role", { required: "Role is Required" })} />
+                Admin
               </label>
             </div>
 
@@ -38,7 +99,7 @@ function Register() {
             <div className="w-full">
               <input type="text"
                 placeholder="First name"
-                className="w-full border p-2 rounded"
+                className={inputClass}
                 {...register("firstName", { required: "First name required" })}
               />
               {errors.firstName && (
@@ -52,7 +113,7 @@ function Register() {
               <input
                 type="text"
                 placeholder="Last name"
-                className="w-full border p-2 rounded"
+                className={inputClass}
                 {...register("lastName", { required: "Last name required" })}
               />
               {errors.lastName && (
@@ -68,7 +129,7 @@ function Register() {
             <input
               type="email"
               placeholder="Email"
-              className="w-full border p-2 rounded"
+              className={inputClass}
               {...register("email", { required: "Email required" })}
             />
             {errors.email && (
@@ -81,7 +142,7 @@ function Register() {
             <input
               type="password"
               placeholder="Password"
-              className="w-full border p-2 rounded"
+              className={inputClass}
               {...register("password", { required: "Password required" })}
             />
             {errors.password && (
@@ -93,8 +154,8 @@ function Register() {
           <div>
             <input
               type="file"
-              className="w-full border p-2 rounded"
-              {...register("profileImage", { required: "Image required" })}
+              className={inputClass}
+              // {...register("profileImageUrl")}
             />
             {errors.profileImage && (
               <p className="text-red-500 text-sm">
@@ -106,7 +167,7 @@ function Register() {
           {/* Button */}
           <button
             type="submit"
-            className="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded font-semibold transition"
+            className={submitBtn}
           >
             Register
           </button>

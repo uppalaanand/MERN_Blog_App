@@ -2,6 +2,11 @@ import {createBrowserRouter, Outlet, RouterProvider} from 'react-router'
 import RootLayout from './components/RootLayout'
 import Register from './components/Register'
 import Login from './components/Login'
+import AdminDashboard from './components/AdminDashboard'
+import AuthorDashboard from './components/AuthorDashboard'
+import UserDashbourd from './components/UserDashbourd'
+import {Toaster} from 'react-hot-toast'
+import SingleArticle from './components/SingleArticle'
 
 function App() {
 
@@ -11,18 +16,37 @@ function App() {
       element : <RootLayout />,
       children : [
         {
-          path : "/register",
+          path : "register",
           element : <Register />
         },
         {
-          path : "/login",
+          path : "login",
           element : <Login />
+        },
+        {
+          path : "user-profile",
+          element : <UserDashbourd />
+        },
+        {
+          path : "admin-profile",
+          element: <AdminDashboard />
+        },
+        {
+          path : "author-profile",
+          element : <AuthorDashboard />
+        },
+        {
+          path : `article/:id`,
+          element : <SingleArticle />
         }
       ]
     }
   ])
 
-  return <RouterProvider router={routeObj} />
+  return <>
+  <Toaster position='top-center' reverseOrder={false} />
+  <RouterProvider router={routeObj} />
+  </>
 }
 
 export default App

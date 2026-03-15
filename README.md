@@ -56,15 +56,42 @@
 
 ### Frontend Development
 
-Create new React app
-Install TailwindCSS
-Install react-hook-form
-Create the following components 
-     a. Home
-     b. Register
-     c. Login
-     d. AddArticle
-     e. UserDashboard
-     f.  AuthorDashboard
-     g. AdminDashboard
-Design forms in Register, Login & AddArticle components  with responsive nature as like in the attached sample UIs
+    Create new React app
+    Install TailwindCSS
+    Install react-hook-form
+    Create the following components 
+        a. Home
+        b. Register
+        c. Login
+        d. AddArticle
+        e. UserDashboard
+        f.  AuthorDashboard
+        g. AdminDashboard
+    Design forms in Register, Login & AddArticle components  with responsive nature as like in the attached sample UIs
+
+### Date : 10-03-2026   =>  Week9(Day2)
+    1. For styles create one common.js file.
+
+    fetch Vs axios
+    fetch : manual testing of status code
+
+    what is the proof that token is sending through req
+    cors
+
+    npm i react-hot-toast
+
+### From UserProfile/UserDashboard component.
+    -   Read articles of all authors
+    -   Display them in the form of Grid of cards
+            1. card for extra small
+            2. cards for small
+            3. cards for medium
+            4. cards from large screen onwards
+
+### From AuthorProfile component
+    -   Read articles of his own
+    -   Display them in the form of Grid of cards
+            1. card for extra small
+            2. cards for small
+            3. cards for medium
+            4. cards from large screen onwards

@@ -19,6 +19,7 @@ const userSchema = new Schema({
     },
     profileImageUrl : {
         type : String,
+        default: ""
     },
     role : {
         type : String,
@@ -32,7 +33,7 @@ const userSchema = new Schema({
 }, { 
     timestamps : true, 
     versionKey : false,
-    strict : "throw"
+    strict : true
 });
 
 export const UserTypeModel = model('user', userSchema);
