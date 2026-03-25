@@ -99,4 +99,51 @@
 
 ### DATE : 25-03-2026
 ### Inorder to store images/files we will use cdn services like cloudinary/aws
-    - 
+    - Client-side app -> we uses FormData(multipart/formdata) -> it allows both binary/text content to store and send.
+
+    - HTTP Server -> uses express.json()-->req.body
+        - But inorder to extract files from req we uses multer 
+
+    - API will take those files and stores them in cloudinary , cloudinary will returns one cdn link that stores in database
+        - To upload the file to cloudinary it will take sometime, during that time we need to store the the image somewhare, for that we have 2 ways:
+            - 1. Creating one folder in server like uploads/
+            - 2. Storing them in RAM.
+                - We can reduce the storage by asking users to upload the images with limited size by compressing.
+
+    - Database stores that cdn links for reference
+
+### onChange() event will be occured when content is changed in input field
+
+### Flow
+    User selects file
+        |
+    Frontend validates (intant feedback)
+        |
+    User submits form
+        |
+    Backend validates again (security layer)
+        |
+    Upload -> Save
+
+- Add state to React component for preview. This will store a temporary image URL to display
+
+### Process to use FormData
+//create a FormData object
+    const formData = new FormData();
+
+//add all user properties to formData object
+    formData.append("role", newUser.role);
+    formData.append("firstName", newUser.firstName);
+
+let { role, profileImageUrl, ...userObj } = newUser;
+    //add all fields except profilePic to FormData object
+    Object.keys(userObj).forEach((key) => {
+      formData.append(key, userObj[key]);
+    });
+    // add profilePic to Formdata object
+    formData.append("profileImageUrl", profileImageUrl[0]);
+
+let resObj = await axios.post("http://localhost:5000/user-api/users", formData);
+
+
+### images for in backend
