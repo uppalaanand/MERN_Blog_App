@@ -147,3 +147,6 @@ let resObj = await axios.post("http://localhost:5000/user-api/users", formData);
 
 
 ### images for in backend
+
+
+### protecting routes in frontend 

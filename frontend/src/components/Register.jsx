@@ -47,6 +47,7 @@ function Register() {
         }
           // console.log("Response is:", res);
           navigate("/login");
+          return;
       }
 
       if(role === "AUTHOR") {
@@ -58,18 +59,8 @@ function Register() {
         }
           // console.log("Response is:", res);
           navigate("/login");
+          return;
         
-      }
-
-      if(role === "ADMIN") {
-        //make api req
-        let resObj = await axios.post("http://localhost:5000/admin-api/users", formData);
-        let res = resObj.data;
-        if(res.status !== 201) {
-          setError(res.reason);
-        }
-          // console.log("Response is:", res);
-          navigate("/login");
       }
 
     }catch(err) {
