@@ -95,3 +95,8 @@
             2. cards for small
             3. cards for medium
             4. cards from large screen onwards
+
+
+### DATE : 25-03-2026
+### Inorder to store images/files we will use cdn services like cloudinary/aws
+    - 
