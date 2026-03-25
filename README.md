@@ -134,7 +134,7 @@
 //add all user properties to formData object
     formData.append("role", newUser.role);
     formData.append("firstName", newUser.firstName);
-
+                    (or)
 let { role, profileImageUrl, ...userObj } = newUser;
     //add all fields except profilePic to FormData object
     Object.keys(userObj).forEach((key) => {

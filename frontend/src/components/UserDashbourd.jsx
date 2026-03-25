@@ -12,6 +12,7 @@ function UserDashbourd() {
   const [message, setMessage] = useState("");
 
   const logout = useAuth(state => state.logout);
+  const user = useAuth(state => state.currentUser);
   const navigate = useNavigate();
 
   const onLogout = async () => {
@@ -44,7 +45,10 @@ function UserDashbourd() {
 
   return (
     <div className='flex flex-col justify-center m-10'>
-      <button className={ghostBtn} onClick={onLogout}>Logout</button>
+      <div>
+        <img src={user.profileImageUrl} alt="" />
+        <button className={ghostBtn} onClick={onLogout}>Logout</button>
+      </div>
       <div>
         <h1 className={pageTitleClass}>All Articles</h1>
         </div>
