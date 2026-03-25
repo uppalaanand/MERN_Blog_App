@@ -7,6 +7,7 @@ import AuthorDashboard from './components/AuthorDashboard'
 import UserDashbourd from './components/UserDashbourd'
 import {Toaster} from 'react-hot-toast'
 import SingleArticle from './components/SingleArticle'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
 
@@ -25,15 +26,24 @@ function App() {
         },
         {
           path : "user-profile",
-          element : <UserDashbourd />
+          element : 
+            <ProtectedRoute allowedRoles={["USER"]}>
+              <UserDashbourd />
+            </ProtectedRoute>
         },
         {
           path : "admin-profile",
-          element: <AdminDashboard />
+          element: 
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
         },
         {
           path : "author-profile",
-          element : <AuthorDashboard />
+          element : 
+          <ProtectedRoute allowedRoles={["AUTHOR"]}>
+            <AuthorDashboard />
+          </ProtectedRoute>
         },
         {
           path : `article/:id`,
