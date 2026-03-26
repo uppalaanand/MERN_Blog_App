@@ -66,9 +66,15 @@ commonRoute.get('/article/:articleId', async (req, res) => {
     //get the article id 
     const {articleId} = req.params;
     //get article from backend
-    const article = await ArticleModel.findById(articleId).populate("comments.user");
+    const article = await ArticleModel.findById(articleId).populate("comments.user author", "-password");
     if(!article) {
         return res.json(404).json({message:"Article Not Found"});
     }
     res.status(200).json({message:"Article Found", payload:article});
+})
+
+//Page refresh
+commonRoute.get("/check-auth", verifyToken("USER", "AUTHOR", "ADMIN"), (req, res) => {
+    console.log("num", req.user);
+    res.status(200).json({message : "authenticates", payload : req.user});
 })

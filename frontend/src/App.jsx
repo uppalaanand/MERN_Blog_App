@@ -8,6 +8,10 @@ import UserDashbourd from './components/UserDashbourd'
 import {Toaster} from 'react-hot-toast'
 import SingleArticle from './components/SingleArticle'
 import ProtectedRoute from './components/ProtectedRoute'
+import AuthorProfile from './components/AuthorProfile'
+import WriteArticle from './components/WriteArticle'
+import ErrorBoundary from './components/ErrorBoundary'
+import EditArticle from './components/EditArticle'
 
 function App() {
 
@@ -15,6 +19,7 @@ function App() {
     {
       path : "/",
       element : <RootLayout />,
+      errorElement:<ErrorBoundary />,
       children : [
         {
           path : "register",
@@ -42,12 +47,30 @@ function App() {
           path : "author-profile",
           element : 
           <ProtectedRoute allowedRoles={["AUTHOR"]}>
-            <AuthorDashboard />
-          </ProtectedRoute>
+            <AuthorProfile />
+          </ProtectedRoute>,
+          children : [
+            {
+              index : true,
+              element : <AuthorDashboard />
+            },
+            {
+              path : "articles",
+              element : <AuthorDashboard />
+            },
+            {
+              path : "write-article",
+              element : <WriteArticle />
+            }
+          ]
         },
         {
           path : `article/:id`,
           element : <SingleArticle />
+        },
+        {
+          path : "edit-article",
+          element : <EditArticle />
         }
       ]
     }

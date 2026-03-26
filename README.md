@@ -150,3 +150,36 @@ let resObj = await axios.post("http://localhost:5000/user-api/users", formData);
 
 
 ### protecting routes in frontend 
+
+- Create one protected components and wrap the restricted components into it.
+    <!-- Ex : <ProtectedRoute allowedRoles={["USER"]}>
+              <UserDashbourd />
+         </ProtectedRoute> -->
+
+    <!-- function ProtectedRoute({ children, allowedRoles }) {
+          return children;
+    }
+
+    export default ProtectedRoute; -->
+
+
+### Page Refress
+    Place this in RootLayout
+        const refreshPage = useAuth(state=>state.refreshPage);
+        const loading = useAuth(state=>state.loading);
+        
+        useEffect(() => {
+            refreshPage();
+        }, []);
+
+    In Store
+        const res = await axios.get("http://localhost:5000/common-api/check-auth", { withCredentials : true});
+        //update the state
+         set({loading:false, isAuthenticated: true, currentUser: res.data.payload});
+
+    In backend
+        <!-- Generate the token
+        const token = jwt.sign({userId : user._id, role : user.role, email : user.email}, process.env.JWT_SECRET, { expiresIn : '1h' }); -->
+        const userObj = user.toObject();
+        delete userObj.password;
+        const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn : '1h' });

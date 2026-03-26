@@ -44,4 +44,17 @@ export const useAuth = create((set) => ({
             })
         }
     },
+
+    refreshPage: async () => {
+        try {
+            //set loading state
+            set({loading:true, error:null});
+            const res = await axios.get("http://localhost:5000/common-api/check-auth", { withCredentials : true});
+            //update the state
+            set({loading:false, isAuthenticated: true, currentUser: res.data.payload});
+        }catch(err) {
+            console.log("err is:", err);
+            set({loading:false, error:err.response?.data?.error || "Invalid Token", isAuthenticated: false, currentUser: null});
+        }
+    }
 }))

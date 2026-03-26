@@ -44,22 +44,22 @@ userRoute.post("/users", upload.single("profileImageUrl"), async (req, res, next
 //read all articles
 userRoute.get('/articles', verifyToken("USER"), async (req, res) => {
     //get all articles
-    let articles = await ArticleModel.find({isArticleActive : true});
+    let articles = await ArticleModel.find({isArticleActive : true}).populate("author");
     res.status(200).json({message : "All Articles", payload : articles});
 });
 
 //comment on articles
 userRoute.post('/comments', verifyToken("USER"), async (req, res) => {
     const {articleId, user, comment} = req.body;
-    // console.log(req.user);
+    console.log(req.user);
     //Check user(req.user)
-    if(user !== req.user.userId) {
-        return res.status(403).json({message : "Forbidden"});
-    }
+    // if(user !== req.user.userId) {
+    //     return res.status(403).json({message : "Forbidden"});
+    // }
     let article = await ArticleModel.findById(articleId);
     if(!article) {
         res.status(404).json({message : "Article Not Found"});
     }
     let updated = await ArticleModel.findByIdAndUpdate(articleId, {$push : {"comments": {comment, user}}}, { new : true, runValidators:true });
     res.status(200).json({message : "Comment added", payload : updated});
-})
+});

@@ -8,7 +8,7 @@ function Header() {
   const isAuthenticated = useAuth(state=>state.isAuthenticated);
   const user = useAuth(state=>state.currentUser);
   const logout = useAuth(state=>state.logout);
-
+  console.log("User:", user);
   const navigate = useNavigate();
   
   const onLogout = async () => {

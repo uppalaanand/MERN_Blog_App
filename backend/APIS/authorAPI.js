@@ -71,7 +71,7 @@ authorRoute.get('/articles/:authorId', verifyToken("AUTHOR"), async (req, res) =
     //     res.status(400).json({message : "Invalid Author"});
     // };
     //read articles by this author
-    let articles = await ArticleModel.find({ author : authorId, isArticleActive : true }).populate("author")
+    let articles = await ArticleModel.find({ author : authorId, isArticleActive : true }).populate("author", "firstName email")
     //send res
     res.status(200).json({message : "All the Articles", payload : articles});
 });
@@ -81,9 +81,10 @@ authorRoute.put('/articles', verifyToken("AUTHOR"), async (req, res) => {
     //get modified article from req
     let {title, category, articleId, content, author } = req.body;
     //find the article
+    console.log("Article:", req.body);
     let article = await ArticleModel.findOne({ _id : articleId, author });
     if(!article) {
-        res.status(404).json({message : "Article not found"});
+        return res.status(404).json({message : "Article not found"});
     }
     // update the article
     let updatedArticle = await ArticleModel.findByIdAndUpdate(articleId, {$set : { title, category, content }}, { new : true });
@@ -92,7 +93,7 @@ authorRoute.put('/articles', verifyToken("AUTHOR"), async (req, res) => {
 });
 
 //delete {soft delete} article(protected)
-authorRoute.patch('/articles/:articleId', verifyToken("AUTHOR"), async (req, res) => {
+authorRoute.patch('/articles/:articleId/status', verifyToken("AUTHOR"), async (req, res) => {
     const { isArticleActive } = req.body;
     const { articleId } = req.params;
 
