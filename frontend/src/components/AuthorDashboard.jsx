@@ -26,7 +26,7 @@ function AuthorDashboard() {
         setLoading(true);
         console.log("user", currentUser);
         const {_id} = currentUser;
-        let resObj = await axios.get(`http://localhost:5000/author-api/articles/${id}`, {withCredentials:true});
+        let resObj = await axios.get(`http://localhost:5000/author-api/articles/${_id}`, {withCredentials:true});
         console.log("DatA", resObj)
         setArticles(resObj.data.payload);
       }catch(err) {
@@ -45,7 +45,7 @@ function AuthorDashboard() {
             </div>
             <div className={articleGrid}>
               {
-                articles.map((art, idx) => (<div key={idx} className={articleCardClass}>
+                articles.map((art, idx) => (<div key={idx} onClick={() => navigate(`/article/${art._id}`)} className={articleCardClass}>
                   <p className={articleTitle}>{art.title}</p>
                   <p className={articleExcerpt}>{art.category}</p>
                   <p className={articleBody}>{art.content}</p>

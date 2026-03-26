@@ -8,6 +8,9 @@ import UserDashbourd from './components/UserDashbourd'
 import {Toaster} from 'react-hot-toast'
 import SingleArticle from './components/SingleArticle'
 import ProtectedRoute from './components/ProtectedRoute'
+import AuthorProfile from './components/AuthorProfile'
+import WriteArticle from './components/WriteArticle'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
 
@@ -42,12 +45,30 @@ function App() {
           path : "author-profile",
           element : 
           <ProtectedRoute allowedRoles={["AUTHOR"]}>
-            <AuthorDashboard />
-          </ProtectedRoute>
+            <AuthorProfile />
+          </ProtectedRoute>,
+          children : [
+            {
+              index : true,
+              element : <AuthorDashboard />
+            },
+            {
+              path : "articles",
+              element : <AuthorDashboard />
+            },
+            {
+              path : "write-article",
+              element : <WriteArticle />
+            }
+          ]
         },
         {
           path : `article/:id`,
           element : <SingleArticle />
+        },
+        {
+          path : "*",
+          element : <ErrorBoundary />
         }
       ]
     }
