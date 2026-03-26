@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import AuthorProfile from './components/AuthorProfile'
 import WriteArticle from './components/WriteArticle'
 import ErrorBoundary from './components/ErrorBoundary'
+import EditArticle from './components/EditArticle'
 
 function App() {
 
@@ -65,6 +66,10 @@ function App() {
         {
           path : `article/:id`,
           element : <SingleArticle />
+        },
+        {
+          path : "edit-article",
+          element : <EditArticle />
         },
         {
           path : "*",

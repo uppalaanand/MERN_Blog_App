@@ -50,6 +50,37 @@ export const articleBody        = "text-[#6e6e73] leading-[1.85] text-[0.95rem] 
 export const timestampClass     = "text-xs text-[#a1a1a6] flex items-center gap-1.5"
 export const tagClass           = "text-[0.65rem] font-semibold text-[#0066cc] uppercase tracking-widest w-fit"
 
+// ─── Article Page ─────────────────────────────────────
+export const articlePageWrapper = "max-w-3xl mx-auto px-6 py-14";
+
+export const articleHeader = "mb-10 flex flex-col gap-4";
+
+export const articleCategory = "text-[0.7rem] font-semibold uppercase tracking-widest text-[#0066cc]";
+
+export const articleMainTitle = "text-4xl font-bold text-[#1d1d1f] leading-tight tracking-tight";
+
+export const articleAuthorRow =
+  "flex items-center justify-between border-t border-b border-[#e8e8ed] py-4 text-sm text-[#6e6e73]";
+
+export const authorInfo = "flex items-center gap-2 font-medium text-[#1d1d1f]";
+
+export const articleContent = "text-[#1d1d1f] leading-[1.9] text-[1rem] whitespace-pre-line mt-8";
+
+export const articleFooter = "border-t border-[#e8e8ed] mt-12 pt-6 text-sm text-[#a1a1a6]";
+// ─── Article Actions ─────────────────────────────
+export const articleActions = "flex gap-3 mt-6";
+
+export const editBtn = "bg-[#0066cc] text-white text-sm px-4 py-2 rounded-full hover:bg-[#004499] transition";
+
+export const deleteBtn = "bg-[#ff3b30] text-white text-sm px-4 py-2 rounded-full hover:bg-[#d62c23] transition";
+
+// ─── Article Status Badge ─────────────────────────
+export const articleStatusActive =
+  "absolute top-3 right-3 text-[10px] font-semibold px-2 py-1 rounded-full bg-[#34c759]/20 text-[#248a3d]";
+
+export const articleStatusDeleted =
+  "absolute top-3 right-3 text-[10px] font-semibold px-2 py-1 rounded-full bg-[#ff3b30]/20 text-[#cc2f26]";
+
 // ─── Feedback ─────────────────────────────────────────
 export const errorClass         = "bg-[#ff3b30]/[0.06] text-[#cc2f26] border border-[#ff3b30]/[0.18] rounded-xl px-4 py-3 text-sm"
 export const successClass       = "bg-[#34c759]/[0.07] text-[#248a3d] border border-[#34c759]/20 rounded-xl px-4 py-3 text-sm"

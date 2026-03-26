@@ -66,7 +66,7 @@ commonRoute.get('/article/:articleId', async (req, res) => {
     //get the article id 
     const {articleId} = req.params;
     //get article from backend
-    const article = await ArticleModel.findById(articleId).populate("comments.user");
+    const article = await ArticleModel.findById(articleId).populate("comments.user author", "-password");
     if(!article) {
         return res.json(404).json({message:"Article Not Found"});
     }

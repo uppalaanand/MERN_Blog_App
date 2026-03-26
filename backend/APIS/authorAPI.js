@@ -81,9 +81,10 @@ authorRoute.put('/articles', verifyToken("AUTHOR"), async (req, res) => {
     //get modified article from req
     let {title, category, articleId, content, author } = req.body;
     //find the article
+    console.log("Article:", req.body);
     let article = await ArticleModel.findOne({ _id : articleId, author });
     if(!article) {
-        res.status(404).json({message : "Article not found"});
+        return res.status(404).json({message : "Article not found"});
     }
     // update the article
     let updatedArticle = await ArticleModel.findByIdAndUpdate(articleId, {$set : { title, category, content }}, { new : true });

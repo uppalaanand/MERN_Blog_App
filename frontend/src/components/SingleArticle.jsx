@@ -1,74 +1,140 @@
-import axios from "axios";
+import { useParams, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router"
-import { articleBody, articleMeta, divider, errorClass, headingClass, loadingClass, pageBackground, pageWrapper, tagClass } from "../styles/common";
+import axios from "axios";
+import { useAuth } from "../store/authStore";
+import { toast } from "react-hot-toast";
+import {
+  articlePageWrapper,
+  articleHeader,
+  articleCategory,
+  articleMainTitle,
+  articleAuthorRow,
+  authorInfo,
+  articleContent,
+  articleFooter,
+  articleActions,
+  editBtn,
+  deleteBtn,
+  loadingClass,
+  errorClass,
+} from "../styles/common.js";
 
 function SingleArticle() {
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [article, setArticle] = useState(null);
-
+  const { id } = useParams();
   const location = useLocation();
-  const {id} = useParams();
-  // setArticle(location.state);
-  // console.log(id);
+  const navigate = useNavigate();
+
+  const user = useAuth((state) => state.currentUser);
+
+  const [article, setArticle] = useState(location.state || null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function getArticle() {
+    if (article) return;
+
+    const getArticle = async () => {
+      setLoading(true);
+
       try {
-        if(location.state) {
-          setArticle(location.state);
-          // console.log("state:", location.state);
-          return;
-        }
-        setLoading(true);
-        const res = await axios.get(`http://localhost:5000/common-api/article/${id}`);
-        // console.log("api",res.data);
+        const res = await axios.get(`http://localhost:5000/common-api/article/${id}`, { withCredentials: true });
+
         setArticle(res.data.payload);
-      }catch(err) {
-        setError(err);
-      }finally{
+      } catch (err) {
+        setError(err.response?.data?.error);
+      } finally {
         setLoading(false);
       }
-    }
-    getArticle();
-  }, [id, location.state]);
+    };
 
-  if(loading) return <p className={loadingClass}>Loading...</p>
-  if(error) return <p className={errorClass}>{error}</p>
+    getArticle();
+  }, [id]);
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  };
+
+  // delete & restore article
+  const toggleArticleStatus = async () => {
+    const newStatus = !article.isArticleActive;
+
+    const confirmMsg = newStatus ? "Restore this article?" : "Delete this article?";
+    if (!window.confirm(confirmMsg)) return;
+
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/author-api/articles/${id}/status`,
+        { isArticleActive: newStatus },
+        { withCredentials: true },
+      );
+
+      console.log("SUCCESS:", res.data);
+
+      setArticle(res.data.payload);
+
+      toast.success(res.data.message);
+    } catch (err) {
+      console.log("ERROR:", err.response);
+
+      const msg = err.response?.data?.message;
+
+      if (err.response?.status === 400) {
+        toast(msg); // already deleted/active case
+      } else {
+        setError(msg || "Operation failed");
+      }
+    }
+  };
+  
+  const editArticle = (articleObj) => {
+    navigate("/edit-article", { state: articleObj });
+  };
+
+  if (loading) return <p className={loadingClass}>Loading article...</p>;
+  if (error) return <p className={errorClass}>{error}</p>;
+  if (!article) return null;
 
   return (
-    <div className={pageBackground}>
-      <div className={pageWrapper}>
+    <div className={articlePageWrapper}>
+      {/* Header */}
+      <div className={articleHeader}>
+        <span className={articleCategory}>{article.category}</span>
 
-        {article && (
-          <div className="max-w-3xl">
+        <h1 className={`${articleMainTitle} uppercase`}>{article.title}</h1>
 
-            <span className={tagClass}>{article.category}</span>
+        <div className={articleAuthorRow}>
+          {console.log(article)}
+          <div className={authorInfo}>✍️ {article.author?.firstName || "Author"}</div>
 
-            <h1 className={`${headingClass} mt-2`}>
-              {article.title}
-            </h1>
-
-            <p className={`${articleMeta} mt-1`}>
-              Published on{" "}
-              {new Date(article.createdAt).toLocaleString("en-IN", {
-                timeZone: "Asia/Kolkata"
-              })} IST
-            </p>
-
-            <div className={divider}></div>
-
-            <p className={articleBody}>
-              {article.content}
-            </p>
-
-          </div>
-        )}
-
+          <div>{formatDate(article.createdAt)}</div>
+        </div>
       </div>
+
+      {/* Content */}
+      <div className={articleContent}>{article.content}</div>
+
+      {/* AUTHOR actions */}
+      {user?.role === "AUTHOR" && (
+        <div className={articleActions}>
+          <button className={editBtn} onClick={() => editArticle(article)}>
+            Edit
+          </button>
+
+          <button className={deleteBtn} onClick={toggleArticleStatus}>
+            {article.isArticleActive ? "Delete" : "Restore"}
+          </button>
+        </div>
+      )}
+      {/* form to add comment if role is USER */}
+
+      {/* Footer */}
+      <div className={articleFooter}>Last updated: {formatDate(article.updatedAt)}</div>
     </div>
-  )
+  );
 }
 
-export default SingleArticle
+export default SingleArticle;
