@@ -150,3 +150,17 @@ let resObj = await axios.post("http://localhost:5000/user-api/users", formData);
 
 
 ### protecting routes in frontend 
+
+- Create one protected components and wrap the restricted components into it.
+    <!-- Ex : <ProtectedRoute allowedRoles={["USER"]}>
+              <UserDashbourd />
+         </ProtectedRoute> -->
+
+    <!-- function ProtectedRoute({ children, allowedRoles }) {
+          return children;
+    }
+
+    export default ProtectedRoute; -->
+
+
+### Page Refress

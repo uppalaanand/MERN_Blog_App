@@ -48,9 +48,11 @@ export const authenticate = async ({email, password}) => {
         throw err;
     }
     //Generate the token
-    const token = jwt.sign({userId : user._id, role : user.role, email : user.email}, process.env.JWT_SECRET, { expiresIn : '1h' });
+    // const token = jwt.sign({userId : user._id, role : user.role, email : user.email}, process.env.JWT_SECRET, { expiresIn : '1h' });
     const userObj = user.toObject();
     delete userObj.password;
+    const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn : '1h' });
+
 
     return { token, user : userObj };
 }

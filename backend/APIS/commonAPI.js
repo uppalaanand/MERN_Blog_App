@@ -72,3 +72,9 @@ commonRoute.get('/article/:articleId', async (req, res) => {
     }
     res.status(200).json({message:"Article Found", payload:article});
 })
+
+//Page refresh
+commonRoute.get("/check-auth", verifyToken("USER", "AUTHOR", "ADMIN"), (req, res) => {
+    console.log("num", req.user);
+    res.status(200).json({message : "authenticates", payload : req.user});
+})
