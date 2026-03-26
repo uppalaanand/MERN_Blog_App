@@ -30,7 +30,7 @@ Content-Type: application/json
 
 {
     "password": "1234",
-    "email": "testing10@gmail.com"
+    "email": "testing3@gmail.com"
 }
 
 ###
@@ -91,8 +91,8 @@ POST http://localhost:5000/user-api/comments
 Content-Type: application/json
 
 {
-    "articleId": "69897505b3709d2748d57f6d",
-    "user": "6989798d09520f8cd85dcf7f",
+    "articleId": "69c4fc9d9f45ef0311f18093",
+    "user": "69c37ee3604c526286421ea7",
     "comment": "Great article! Very informative."
 }
 

@@ -17,12 +17,15 @@ import {
   deleteBtn,
   loadingClass,
   errorClass,
+  inputClass,
 } from "../styles/common.js";
+import { useForm } from "react-hook-form";
 
 function SingleArticle() {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
 
   const user = useAuth((state) => state.currentUser);
 
@@ -94,46 +97,79 @@ function SingleArticle() {
     navigate("/edit-article", { state: articleObj });
   };
 
+  //post comment by user
+  const addComment = async (commentObj) => {
+    //add artcileId
+    commentObj.articleId = article._id;
+    console.log(commentObj);
+    let res = await axios.post("http://localhost:5000/user-api/comments", commentObj, { withCredentials: true });
+    if (res.status === 200) {
+      toast.success(res.data.message);
+      setArticle(res.data.payload);
+    }
+  };
+
   if (loading) return <p className={loadingClass}>Loading article...</p>;
   if (error) return <p className={errorClass}>{error}</p>;
   if (!article) return null;
 
   return (
-    <div className={articlePageWrapper}>
-      {/* Header */}
-      <div className={articleHeader}>
-        <span className={articleCategory}>{article.category}</span>
+      <div className={articlePageWrapper}>
+        {/* Header */}
+        <div className={articleHeader}>
+          <span className={articleCategory}>{article.category}</span>
 
-        <h1 className={`${articleMainTitle} uppercase`}>{article.title}</h1>
+          <h1 className={`${articleMainTitle} uppercase`}>{article.title}</h1>
 
-        <div className={articleAuthorRow}>
-          {console.log(article)}
-          <div className={authorInfo}>✍️ {article.author?.firstName || "Author"}</div>
+          <div className={articleAuthorRow}>
+            {console.log(article)}
+            <div className={authorInfo}>✍️ {article.author?.firstName || "Author"}</div>
 
-          <div>{formatDate(article.createdAt)}</div>
+            <div>{formatDate(article.createdAt)}</div>
+          </div>
         </div>
+
+        {/* Content */}
+        <div className={articleContent}>{article.content}</div>
+
+        {/* AUTHOR actions */}
+        {user?.role === "AUTHOR" && (
+          <div className={articleActions}>
+            <button className={editBtn} onClick={() => editArticle(article)}>
+              Edit
+            </button>
+
+            <button className={deleteBtn} onClick={toggleArticleStatus}>
+              {article.isArticleActive ? "Delete" : "Restore"}
+            </button>
+          </div>
+        )}
+        {/* form to add comment if role is USER */}
+        {user?.role === "USER" && (
+          <div className={articleActions}>
+            <form onSubmit={handleSubmit(addComment)}>
+              <input
+                type="text"
+                {...register("comment")}
+                className={inputClass}
+                placeholder="Write your comment here..."
+              />
+              <button type="submit" className="bg-amber-600 text-white px-5 py-2 rounded-2xl mt-5">
+                Add comment
+              </button>
+            </form>
+          </div>
+        )}
+        {/* comments */}
+        {
+          article.comments.map((com, idx) => (<div className="bg-gray-300 p-6 rounded-2xl mt-4">
+            <h1 className="uppercase text-pink-400 font-bold mb-3">{com.user?.email}</h1>
+            <p className="">{com.comment}</p>
+          </div>))
+        }
+        {/* Footer */}
+        <div className={articleFooter}>Last updated: {formatDate(article.updatedAt)}</div>
       </div>
-
-      {/* Content */}
-      <div className={articleContent}>{article.content}</div>
-
-      {/* AUTHOR actions */}
-      {user?.role === "AUTHOR" && (
-        <div className={articleActions}>
-          <button className={editBtn} onClick={() => editArticle(article)}>
-            Edit
-          </button>
-
-          <button className={deleteBtn} onClick={toggleArticleStatus}>
-            {article.isArticleActive ? "Delete" : "Restore"}
-          </button>
-        </div>
-      )}
-      {/* form to add comment if role is USER */}
-
-      {/* Footer */}
-      <div className={articleFooter}>Last updated: {formatDate(article.updatedAt)}</div>
-    </div>
   );
 }
 

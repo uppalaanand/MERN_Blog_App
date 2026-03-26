@@ -19,6 +19,7 @@ function App() {
     {
       path : "/",
       element : <RootLayout />,
+      errorElement:<ErrorBoundary />,
       children : [
         {
           path : "register",
@@ -70,10 +71,6 @@ function App() {
         {
           path : "edit-article",
           element : <EditArticle />
-        },
-        {
-          path : "*",
-          element : <ErrorBoundary />
         }
       ]
     }
