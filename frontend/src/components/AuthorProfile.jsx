@@ -9,7 +9,7 @@ import {
 
 function AuthorProfile() {
   return (
-    <div className={pageWrapper}>
+    <div className="px-6 md:px-16 py-10 bg-gray-50 min-h-screen">
       
       {/* Author Navigation */}
       <div className="flex gap-6 mb-6">

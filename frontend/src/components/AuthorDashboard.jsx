@@ -93,7 +93,7 @@ function AuthorDashboard() {
   }, []);
 
   return (
-    <div className="px-6 md:px-16 py-10 bg-gray-50">
+    <div className="bg-gray-50">
 
       {/* Header Section */}
       <div className="mb-10">

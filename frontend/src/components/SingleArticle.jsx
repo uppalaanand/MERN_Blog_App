@@ -162,10 +162,13 @@ function SingleArticle() {
         )}
         {/* comments */}
         {
-          article.comments.map((com, idx) => (<div className="bg-gray-300 p-6 rounded-2xl mt-4">
-            <h1 className="uppercase text-pink-400 font-bold mb-3">{com.user?.email}</h1>
+          article.comments.map((com, idx) => (<div className="bg-gray-300 p-6 mt-4">
+            <div className="flex items-center gap-2">
+              <img className="w-7 h-7 rounded-full border-2 border-white shadow-sm object-cover" src={article.author.profileImageUrl} alt="#" />
+              <h1 className="font-bold mb-3">{article.author.firstName}{article.author.lastName}({article.author.email})</h1>
+            </div>
             <p className="">{com.comment}</p>
-          </div>))
+          </div>))  
         }
         {/* Footer */}
         <div className={articleFooter}>Last updated: {formatDate(article.updatedAt)}</div>
