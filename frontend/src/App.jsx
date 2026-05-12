@@ -12,6 +12,7 @@ import AuthorProfile from './components/AuthorProfile'
 import WriteArticle from './components/WriteArticle'
 import ErrorBoundary from './components/ErrorBoundary'
 import EditArticle from './components/EditArticle'
+import Home from './components/Home'
 
 function App() {
 
@@ -21,6 +22,10 @@ function App() {
       element : <RootLayout />,
       errorElement:<ErrorBoundary />,
       children : [
+        {
+          path : "/",
+          element : <Home />
+        },
         {
           path : "register",
           element : <Register />

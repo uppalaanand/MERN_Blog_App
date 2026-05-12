@@ -105,10 +105,10 @@ function Register() {
                 Author
               </label>
 
-              <label className={labelClass}>
+              {/* <label className={labelClass}>
                 <input type="radio" value="AADMIN" {...register("role", { required: "Role is Required" })} />
                 Admin
-              </label>
+              </label> */}
             </div>
 
             {errors.role && ( <p className="text-red-500 text-sm">{errors.role.message}</p> )}
