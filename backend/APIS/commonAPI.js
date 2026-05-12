@@ -16,8 +16,8 @@ commonRoute.post('/login', async (req, res) => {
     //save the token in httpOnly
     res.cookie("token", token, {
         httpOnly : true,
-        sameSite : 'lax',
-        secure : false
+        sameSite : 'none',
+        secure : true
     });
     //send res
     res.status(200).json({message : "Login Success", payload : user});
