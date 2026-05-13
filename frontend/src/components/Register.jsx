@@ -3,6 +3,7 @@ import { errorClass, formTitle, inputClass, labelClass, loadingClass, submitBtn 
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import {useNavigate} from 'react-router'
+import { registerAuthor, registerUser } from "../services/api";
 
 function Register() {
   const [loading, setLoading] = useState(false);
@@ -40,7 +41,8 @@ function Register() {
 
       if(role === "USER") {
         //make api req
-        let resObj = await axios.post("http://localhost:5000/user-api/users", formData);
+        // let resObj = await axios.post("http://localhost:5000/user-api/users", formData);
+        let resObj = await registerUser(formData);
         let res = resObj.data;
         if(res.status !== 201) {
           setError(res.reason);
@@ -52,7 +54,8 @@ function Register() {
 
       if(role === "AUTHOR") {
         //make api req
-        let resObj = await axios.post("http://localhost:5000/author-api/users", formData);
+        // let resObj = await axios.post("http://localhost:5000/author-api/users", formData);
+        let resObj = await registerAuthor(formData);
         let res = resObj.data;
         if(res.status !== 201) {
           setError(res.reason);

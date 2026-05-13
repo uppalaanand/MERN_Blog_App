@@ -15,6 +15,7 @@ import {
   articlePageWrapper,
 } from "../styles/common";
 import { useAuth } from "../store/authStore";
+import { editArticle } from "../services/api";
 
 function EditArticle() {
   const location = useLocation();
@@ -44,7 +45,8 @@ function EditArticle() {
     console.log(data);
     data.articleId = article._id;
     data.author = currentUser._id;
-    let res = await axios.put("http://localhost:5000/author-api/articles", data, { withCredentials: true });
+    // let res = await axios.put("http://localhost:5000/author-api/articles", data, { withCredentials: true });
+    let res = await editArticle(data);
     console.log("res update atricle", res);
     navigate(`/article/${article._id}`, {
       state: res.data.payload,

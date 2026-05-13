@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useAuth } from "../store/authStore";
+import { getAllArticles } from "../services/api";
 
 function Home() {
   const [articles, setArticles] = useState([]);
@@ -27,13 +28,14 @@ function Home() {
       try {
         setLoading(true);
         // console.log("cur", currentUser);
-        const end = currentUser.role === "AUTHOR" ? "author-api" : "user-api";
-        console.log("end", end);
+        // const end = currentUser.role === "AUTHOR" ? "author-api" : "user-api";
+        // console.log("end", end);
 
-        const resObj = await axios.get(
-          `http://localhost:5000/${end}/articles`,
-          { withCredentials: true }
-        );
+        // const resObj = await axios.get(
+        //   `http://localhost:5000/${end}/articles`,
+        //   { withCredentials: true }
+        // );
+        const resObj = await getAllArticles();
 
         // latest 3 blogs
         setArticles(resObj.data.payload.slice(0, 3));

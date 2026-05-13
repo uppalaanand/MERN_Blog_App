@@ -20,6 +20,7 @@ import {
   inputClass,
 } from "../styles/common.js";
 import { useForm } from "react-hook-form";
+import { createComment, getArticleById } from "../services/api.js";
 
 function SingleArticle() {
   const { id } = useParams();
@@ -40,7 +41,8 @@ function SingleArticle() {
       setLoading(true);
 
       try {
-        const res = await axios.get(`http://localhost:5000/common-api/article/${id}`, { withCredentials: true });
+        // const res = await axios.get(`http://localhost:5000/common-api/article/${id}`, { withCredentials: true });
+        const res = await getArticleById(id);
 
         setArticle(res.data.payload);
       } catch (err) {
@@ -102,7 +104,8 @@ function SingleArticle() {
     //add artcileId
     commentObj.articleId = article._id;
     console.log(commentObj);
-    let res = await axios.post("http://localhost:5000/user-api/comments", commentObj, { withCredentials: true });
+    // let res = await axios.post("http://localhost:5000/user-api/comments", commentObj, { withCredentials: true });
+    let res = await createComment(commentObj);
     if (res.status === 200) {
       toast.success(res.data.message);
       setArticle(res.data.payload);
