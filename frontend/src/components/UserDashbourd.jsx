@@ -3,6 +3,7 @@ import { articleBody, articleCardClass, articleExcerpt, articleGrid, articleMeta
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import { useAuth } from '../store/authStore';
+import { getAllArticles } from '../services/api';
 
 function UserDashbourd() {
   const [article, setArticles] = useState([]);
@@ -18,7 +19,8 @@ function UserDashbourd() {
       async function getArticles() {
         setLoading(true);
         //make api req
-        let resObj = await axios.get("http://localhost:5000/user-api/articles", {withCredentials:true});
+        // let resObj = await axios.get("http://localhost:5000/user-api/articles", {withCredentials:true});
+        let resObj = await getAllArticles();
         //change state
         console.log("res",resObj);
         setArticles(resObj.data.payload);

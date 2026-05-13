@@ -81,7 +81,8 @@ function AuthorDashboard() {
         setLoading(true);
         console.log("user", currentUser);
         const {_id} = currentUser;
-        let resObj = await axios.get(`http://localhost:5000/author-api/articles/${_id}`, {withCredentials:true});
+        // let resObj = await axios.get(`http://localhost:5000/author-api/articles/${_id}`, {withCredentials:true});
+        let resObj = await getArticlesByUser(_id);
         console.log("DatA", resObj)
         setArticles(resObj.data.payload);
       }catch(err) {

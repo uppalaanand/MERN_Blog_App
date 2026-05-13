@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 
 import { formCard, formTitle, formGroup, labelClass, inputClass, submitBtn, errorClass, loadingClass} from "../styles/common";
 import { useAuth } from "../store/authStore";
+import { createArticle } from "../services/api";
 
 function WriteArticle() {
   const navigate = useNavigate();
@@ -20,11 +21,12 @@ function WriteArticle() {
     //add authorId to articleObj
     articleObj.author=currentUser._id;
     try {
-      await axios.post(
-        "http://localhost:5000/author-api/articles",
-        articleObj,
-        { withCredentials: true }
-      );
+      // await axios.post(
+      //   "http://localhost:5000/author-api/articles",
+      //   articleObj,
+      //   { withCredentials: true }
+      // );
+      await createArticle(articleObj);
 
       toast.success("Article published successfully!");
       reset();
