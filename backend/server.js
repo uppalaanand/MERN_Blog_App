@@ -12,7 +12,9 @@ config();   //process.env
 
 const app = Express();
 
-app.use(cors({ origin : ["http://localhost:5173", "mern-blog-app-gamma.vercel.app"], credentials:true}));
+app.use(cors({ origin : ["http://localhost:5173", 
+  "https://mern-blog-app-gamma.vercel.app",
+  "https://mern-blog-app-git-main-uppalaanands-projects.vercel.app"], credentials:true}));
 // app.use(cors());
 //add body parser middleware
 app.use(Express.json());
