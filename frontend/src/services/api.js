@@ -42,3 +42,18 @@ export const logout = () =>
 
 export const refreshPage = () =>
   api.get("/common-api/check-auth");
+
+export const changeArticleStatus = (id, newStatus) =>
+  api.patch(`/author-api/articles/${id}/status`, { isArticleActive: newStatus });
+
+export const getActiveArticles = () =>
+  api.get("/common-api/articles");
+
+export const getAdminArticles = () =>
+  api.get("/admin-api/articles");
+
+export const blockUsers = (userId) =>
+  api.put(`/admin-api/block-user/${userId}`, {})
+
+export const unblockUsers = (userId) =>
+  api.put(`/admin-api/unblock-user/${userId}`, {})

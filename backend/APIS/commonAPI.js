@@ -28,8 +28,8 @@ commonRoute.get('/logout', async (req, res) => {
     //Clear the cookie named 'token
     res.clearCookie('token', {
         httpOnly : true,
-        secure : false,
-        sameSite : 'lax'
+        secure : true,
+        sameSite : 'none'
     })
     res.status(200).json({message : "logged out successfully"});
 });
@@ -78,3 +78,10 @@ commonRoute.get("/check-auth", verifyToken("USER", "AUTHOR", "ADMIN"), (req, res
     console.log("num", req.user);
     res.status(200).json({message : "authenticates", payload : req.user});
 })
+
+//read all articles
+commonRoute.get('/articles', async (req, res) => {
+    //get all articles
+    let articles = await ArticleModel.find({isArticleActive : true}).populate("author");
+    res.status(200).json({message : "All Articles", payload : articles});
+});

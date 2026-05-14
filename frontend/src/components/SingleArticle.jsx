@@ -20,7 +20,7 @@ import {
   inputClass,
 } from "../styles/common.js";
 import { useForm } from "react-hook-form";
-import { createComment, getArticleById } from "../services/api.js";
+import { changeArticleStatus, createComment, getArticleById } from "../services/api.js";
 
 function SingleArticle() {
   const { id } = useParams();
@@ -71,11 +71,12 @@ function SingleArticle() {
     if (!window.confirm(confirmMsg)) return;
 
     try {
-      const res = await axios.patch(
-        `http://localhost:5000/author-api/articles/${id}/status`,
-        { isArticleActive: newStatus },
-        { withCredentials: true },
-      );
+      // const res = await axios.patch(
+      //   `http://localhost:5000/author-api/articles/${id}/status`,
+      //   { isArticleActive: newStatus },
+      //   { withCredentials: true },
+      // );
+      const res = await changeArticleStatus(id, newStatus);
 
       console.log("SUCCESS:", res.data);
 

@@ -13,6 +13,7 @@ import WriteArticle from './components/WriteArticle'
 import ErrorBoundary from './components/ErrorBoundary'
 import EditArticle from './components/EditArticle'
 import Home from './components/Home'
+import AllBlogs from './components/AllBlogs'
 
 function App() {
 
@@ -25,6 +26,10 @@ function App() {
         {
           path : "/",
           element : <Home />
+        },
+        {
+          path : "blogs",
+          element : <AllBlogs />
         },
         {
           path : "register",

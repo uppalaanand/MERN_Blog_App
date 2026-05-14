@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 function Header() {
   const isAuthenticated = useAuth(state=>state.isAuthenticated);
   const user = useAuth(state=>state.currentUser);
+  const role = user?.role || "USER";
   const logout = useAuth(state=>state.logout);
   console.log("User:", user);
   const navigate = useNavigate();
@@ -33,11 +34,21 @@ function Header() {
               Home
             </NavLink>
           </li>
-          <li>
+          {!isAuthenticated && <li>
             <NavLink to="/register" className={({ isActive }) => `hover:text-amber-900 transition ${isActive ? "underline font-semibold" : ""}`}>
               Register
             </NavLink>
-          </li>
+          </li>}
+          {role !== "USER" && <li>
+            <NavLink to={user.role == "AUTHOR" ? "/author-profile" : "/user-profile"} className={({ isActive }) => `hover:text-amber-900 transition ${isActive ? "underline font-semibold" : ""}`}>
+              Profile
+            </NavLink>
+          </li>}
+          {isAuthenticated && <li>
+            <NavLink to="/blogs" className={({ isActive }) => `hover:text-amber-900 transition ${isActive ? "underline font-semibold" : ""}`}>
+              Blogs
+            </NavLink>
+          </li>}
 
           {isAuthenticated ? (
             <li className="flex items-center gap-4"> 

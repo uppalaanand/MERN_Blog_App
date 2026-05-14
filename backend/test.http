@@ -134,3 +134,11 @@ Content-Type: application/json
 ###
 #Get article by id
 GET http://localhost:5000/common-api/article/69afec78c40dd5d5d78702e0
+
+###
+#change article status to published
+PATCH http://localhost:5000/author-api/articles/6a05643a04c5a36ad097fd12/status
+
+###
+#Get all published articles
+GET http://localhost:5000/common-api/articles
