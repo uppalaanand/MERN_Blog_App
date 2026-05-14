@@ -6,14 +6,14 @@ export const adminRoute = Express.Router();
 
 
 //Read all articles
-adminRoute.get('/articles', verifyToken, async (req, res) => {
+adminRoute.get('/articles', verifyToken("ADMIN"), async (req, res) => {
     //get all articles
     let articles = await UserTypeModel.find();
     res.status(200).json({message : "All Articles", payload : articles});
 });
 
 //Block user roles
-adminRoute.put('/block-user/:userId', verifyToken, async (req, res) => {
+adminRoute.put('/block-user/:userId', verifyToken("ADMIN"), async (req, res) => {
     //get user id
     let userId = req.params.userId;
     //verify that user exist
@@ -29,11 +29,11 @@ adminRoute.put('/block-user/:userId', verifyToken, async (req, res) => {
         return res.status(400).json({message : "User Blocked Already", payload : user});
     }
     //send res
-    res.status(200).json({message : "Blocked user"});
+    res.status(200).json({message : "Blocked user", payload : updated});
 });
 
 //Unblock  user roles
-adminRoute.put('/unblock-user/:userId', verifyToken, async (req, res) => {
+adminRoute.put('/unblock-user/:userId', verifyToken("ADMIN"), async (req, res) => {
     //get user id
     let userId = req.params.userId;
     //verify that user exist

@@ -71,7 +71,7 @@ authorRoute.get('/articles/:authorId', verifyToken("AUTHOR"), async (req, res) =
     //     res.status(400).json({message : "Invalid Author"});
     // };
     //read articles by this author
-    let articles = await ArticleModel.find({ author : authorId, isArticleActive : true }).populate("author", "firstName email")
+    let articles = await ArticleModel.find({ author : authorId }).populate("author", "firstName email")
     //send res
     res.status(200).json({message : "All the Articles", payload : articles});
 });

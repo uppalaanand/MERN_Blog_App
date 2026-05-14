@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useAuth } from "../store/authStore";
-import { getAllArticles } from "../services/api";
+import { getActiveArticles, getAllArticles } from "../services/api";
 
 function Home() {
   const [articles, setArticles] = useState([]);
@@ -35,7 +35,7 @@ function Home() {
         //   `http://localhost:5000/${end}/articles`,
         //   { withCredentials: true }
         // );
-        const resObj = await getAllArticles();
+        const resObj = await getActiveArticles();
 
         // latest 3 blogs
         setArticles(resObj.data.payload.slice(0, 3));
