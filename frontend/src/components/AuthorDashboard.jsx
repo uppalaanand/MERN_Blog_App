@@ -65,6 +65,7 @@ import { articleBody, articleCardClass, articleExcerpt, articleGrid, articleMeta
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import { useAuth } from '../store/authStore';
+import { getArticleByUser } from '../services/api';
 
 function AuthorDashboard() {
   const [article, setArticles] = useState([]);
@@ -82,7 +83,7 @@ function AuthorDashboard() {
         console.log("user", currentUser);
         const {_id} = currentUser;
         // let resObj = await axios.get(`http://localhost:5000/author-api/articles/${_id}`, {withCredentials:true});
-        let resObj = await getArticlesByUser(_id);
+        let resObj = await getArticleByUser(_id);
         console.log("DatA", resObj)
         setArticles(resObj.data.payload);
       }catch(err) {
