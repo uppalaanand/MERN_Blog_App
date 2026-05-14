@@ -33,3 +33,12 @@ export const editArticle = (data) =>
 
 export const getArticleByUser = (id) => 
   api.get(`/author-api/articles/${id}`);
+
+export const login = (data) => 
+  api.post("/common-api/login", data);
+
+export const logout = () =>
+  api.get("/common-api/logout");
+
+export const refreshPage = () =>
+  api.get("/common-api/check-auth");

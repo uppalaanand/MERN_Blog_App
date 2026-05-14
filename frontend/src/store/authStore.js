@@ -1,5 +1,6 @@
 import {create} from 'zustand'
 import axios from 'axios'
+import { login, logout, refreshPage } from '../services/api';
 
 export const useAuth = create((set) => ({
     currentUser:null,
@@ -12,7 +13,8 @@ export const useAuth = create((set) => ({
             //set loading true
             set({loading:true, error:null});
             //make api call
-            let res = await axios.post("http://localhost:5000/common-api/login", userCredObj, {withCredentials:true});
+            // let res = await axios.post("http://localhost:5000/common-api/login", userCredObj, {withCredentials:true});
+            let res = await login(userCredObj);
             console.log("res is", res, res.status);
             if(res.data?.message === "error") {
                 console.log("not 200", res.data);
@@ -32,7 +34,8 @@ export const useAuth = create((set) => ({
             //set loading state
             set({loading:true, error:null});
             //make api request
-            await axios.get("http://localhost:5000/common-api/logout", { withCredentials: true});
+            // await axios.get("http://localhost:5000/common-api/logout", { withCredentials: true});
+            await logout();
             //update state
             set({loading:false, isAuthenticated: false, currentUser: null});
         }catch(err) {
@@ -49,7 +52,8 @@ export const useAuth = create((set) => ({
         try {
             //set loading state
             set({loading:true, error:null});
-            const res = await axios.get("http://localhost:5000/common-api/check-auth", { withCredentials : true});
+            // const res = await axios.get("http://localhost:5000/common-api/check-auth", { withCredentials : true});
+            const res = await refreshPage();
             //update the state
             set({loading:false, isAuthenticated: true, currentUser: res.data.payload});
         }catch(err) {
