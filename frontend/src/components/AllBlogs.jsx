@@ -37,9 +37,9 @@ function AllBlogs() {
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-200">
 
       {/* HERO SECTION */}
-      <div className="relative overflow-hidden bg-black py-20 px-6 md:px-16">
+      {/* <div className="relative overflow-hidden bg-black py-20 px-6 md:px-16">
         
-        {/* Glow Effects */}
+        Glow Effects
         <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/20 blur-3xl rounded-full"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-yellow-400/10 blur-3xl rounded-full"></div>
 
@@ -64,7 +64,7 @@ function AllBlogs() {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* BLOG SECTION */}
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-16">
