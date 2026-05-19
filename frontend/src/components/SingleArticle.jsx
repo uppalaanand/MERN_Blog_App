@@ -137,7 +137,7 @@ function SingleArticle() {
         <div className={articleContent}>{article.content}</div>
 
         {/* AUTHOR actions */}
-        {user?.role === "AUTHOR" && (
+        {user?.role === "AUTHOR" && user?._id === article.author?._id && (
           <div className={articleActions}>
             <button className={editBtn} onClick={() => editArticle(article)}>
               Edit
